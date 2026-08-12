@@ -1,8 +1,6 @@
 # WSL Native Preview for Codex Desktop
 
-WSL Native Preview is an experimental Codex Desktop plugin that turns files in a trusted WSL UNC workspace into Windows drive-path Markdown links that the tested Desktop build can open in its built-in previewer. It does not copy the source file.
-
-> Community-maintained experimental project; not affiliated with or endorsed by OpenAI.
+WSL Native Preview turns files in a trusted WSL UNC workspace into Windows drive-path Markdown links that Codex Desktop can open in its built-in previewer. It does not copy the source file.
 
 ## Why it exists
 
@@ -112,7 +110,7 @@ supportLevel: target-build-gated
 
 The alias is user-session state. It is not a filesystem copy, is not guaranteed to survive Desktop or WSL lifecycle changes, and is not automatically removed at SessionEnd so existing chat links do not silently break.
 
-## Experimental behavior
+## Behavior and limitations
 
 - **Desktop routing:** MCP does not require a client to open a drive link in its built-in previewer. The verified Desktop build did so; other builds require a new gate.
 - **ResourceLink:** protocol reads are capped at 32 MiB and can be probed explicitly, but label, hover, copy, click, and preview behavior are client-defined.
