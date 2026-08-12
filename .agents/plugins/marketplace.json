@@ -1,0 +1,20 @@
+{
+  "name": "yangyulun111-wsl-native-preview",
+  "interface": {
+    "displayName": "WSL Native Preview"
+  },
+  "plugins": [
+    {
+      "name": "wsl-native-preview",
+      "source": {
+        "source": "local",
+        "path": "./plugins/wsl-native-preview"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

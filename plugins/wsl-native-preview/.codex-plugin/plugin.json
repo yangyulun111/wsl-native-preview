@@ -1,0 +1,28 @@
+{
+  "name": "wsl-native-preview",
+  "version": "0.2.0",
+  "description": "Prepare workspace-bound WSL file links for the Codex Desktop built-in previewer with trusted lifecycle context.",
+  "author": {
+    "name": "Yulun Yang",
+    "url": "https://github.com/yangyulun111"
+  },
+  "homepage": "https://github.com/yangyulun111/wsl-native-preview",
+  "repository": "https://github.com/yangyulun111/wsl-native-preview",
+  "license": "MIT",
+  "keywords": ["codex", "wsl", "windows", "preview", "mcp"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "WSL Native Preview",
+    "shortDescription": "Preview WSL files in Codex Desktop without copying them.",
+    "longDescription": "Uses trusted SessionStart context, a workspace-scoped DOS device alias, and best-effort Stop correction to return the drive-path Markdown form verified to open Codex Desktop's built-in previewer.",
+    "developerName": "Yulun Yang",
+    "category": "Productivity",
+    "capabilities": ["Local files", "MCP tools", "Lifecycle hooks"],
+    "defaultPrompt": [
+      "Preview files from this WSL workspace.",
+      "Check this task's WSL preview context.",
+      "Release this task's WSL preview mapping."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,92 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: plugins/wsl-native-preview
+
+jobs:
+  canonical-build:
+    name: canonical-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Use Node.js 22
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: plugins/wsl-native-preview/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run smoke:mcp
+      - run: npm run validate:release
+      - name: Verify committed bundles are reproducible
+        run: git diff --exit-code -- dist
+
+  compatibility:
+    name: compatibility (${{ matrix.os }}, Node ${{ matrix.node }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node: "24"
+          - os: windows-latest
+            node: "22"
+          - os: windows-latest
+            node: "24"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: plugins/wsl-native-preview/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run smoke:mcp
+
+  sensitive-content:
+    name: sensitive-content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Use Node.js 22
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+      - run: node scripts/validate-release.mjs
+
+  release-gate:
+    name: release-gate
+    if: always()
+    needs: [canonical-build, compatibility, sensitive-content]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every validation job to succeed
+        working-directory: .
+        env:
+          CANONICAL: ${{ needs.canonical-build.result }}
+          COMPATIBILITY: ${{ needs.compatibility.result }}
+          SENSITIVE: ${{ needs.sensitive-content.result }}
+        run: |
+          test "$CANONICAL" = success
+          test "$COMPATIBILITY" = success
+          test "$SENSITIVE" = success

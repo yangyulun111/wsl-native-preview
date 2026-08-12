@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "wsl-native-preview": {
+      "command": "node",
+      "args": ["./dist/server.mjs"],
+      "cwd": "."
+    }
+  }
+}

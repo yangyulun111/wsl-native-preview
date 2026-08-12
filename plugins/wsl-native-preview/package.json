@@ -1,0 +1,28 @@
+{
+  "name": "@yangyulun111/wsl-native-preview",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Bundled MCP server for the Codex WSL Native Preview plugin.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "esbuild src/server.mjs --bundle --platform=node --format=esm --target=node22 --outfile=dist/server.mjs --legal-comments=none && esbuild src/hook.mjs --bundle --platform=node --format=esm --target=node22 --outfile=dist/hook.mjs --legal-comments=none",
+    "smoke:mcp": "node scripts/mcp-protocol-smoke.mjs",
+    "validate:release": "node scripts/validate-release.mjs",
+    "smoke:mcp:windows": "node scripts/windows-mcp-smoke.mjs",
+    "smoke:windows": "node scripts/windows-smoke.mjs",
+    "gate:wnet:windows": "node scripts/windows-wnet-gate.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "verify": "npm run build && npm test && npm run smoke:mcp && npm run validate:release"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

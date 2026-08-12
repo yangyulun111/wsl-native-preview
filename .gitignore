@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+*.log
+.pytest_cache/
+secret_scan.json
+.DS_Store
+Thumbs.db
