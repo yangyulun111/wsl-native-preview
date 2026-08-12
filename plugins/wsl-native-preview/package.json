@@ -20,7 +20,7 @@
   "dependencies": {
     "@cfworker/json-schema": "4.1.1",
     "@modelcontextprotocol/sdk": "1.30.0",
-    "zod": "3.25.76"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "esbuild": "0.28.2"
